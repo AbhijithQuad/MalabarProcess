@@ -340,7 +340,8 @@ Find Matching PDF Files
                     ${endpoint}    Set Variable    ${CONFIG}[EndPoint]
 
                     #Here need to pass the matched pdf file name to next keyword for voucher signature match
-                    ${sign_status}    sign_checking    ${pdf_file_path}                    
+                    # ${sign_status}    sign_checking    ${pdf_file_path}  
+                    ${sign_status}    Set Variable    ${False}
                    
                      IF    '${sign_status}' == 'error'
                         ${status}=     Set Variable    Invalid
@@ -380,7 +381,7 @@ report fetching and send mail
     
     # ${senderid} =     Get File Name    ${folder}
     ${df_list}    FetchDB_For_FinalReport    ${INPUT_DB_TABLE}    ${mail_id}
-    Log To Console    final data list returned from db:${df_list}
+    #Log To Console    final data list returned from db:${df_list}
     ${is_updated}    update_status_toExcel_for_report      ${df_list}    ${input_excel_path}
     Log To Console    updating to the final report ${is_updated}    
     ${subject}    Set Variable    Success: Run report
