@@ -195,7 +195,7 @@ def extract_voucher_data(voucher_pdf,endpoint,subscription_key,vrLegalEntity,leg
 
     try:    
         # Convert PDF to images
-        images = convert_from_path(voucher_pdf)
+        images = convert_from_path(voucher_pdf, poppler_path=r'C:\poppler\poppler-22.04.0\Library\bin')
 
 
         global extracted_result
