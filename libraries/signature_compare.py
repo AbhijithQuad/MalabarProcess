@@ -25,7 +25,7 @@ class SignatureComparison:
         '''
 
         # Store Pdf with convert_from_path function
-        images = convert_from_path(self.filePath)
+        images = convert_from_path(self.filePath, poppler_path=r'C:\poppler\poppler-22.04.0\Library\bin')
 
         for i in range(len(images)):
 
