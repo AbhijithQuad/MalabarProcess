@@ -34,8 +34,8 @@ EMAIL_SUBJECT                     =   ['Project Petty','marketing petty']
 #  Define the duration in seconds (10 minutes = 600 seconds) -email polling duration
 polling_duration                  =   0
 
-# recepient_List                    =     ['nibiya.monas@quadance.com']
-recepient_list                    = ['abhijith.p@quadance.com','abhijith.p@quadance.com']
+recepient_list                    = ['abhijithp41997@gmail.com','abhijith.p@quadance.com']
+
 
 
 # ----------------------voucherDataExtraction.robot file variables ----------------------
