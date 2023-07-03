@@ -162,7 +162,7 @@ Email Fetching Based On Subject
         
         END  
 
-    Quit Application
+    # Quit Application
 
     END
 
@@ -211,7 +211,11 @@ send mail if exception occures
     
     ${body}    Set Variable    Hi team,\n\nThe email you send on '${sendingTime}' with subject line '${email.Subject}' is not in proper format.\nPlease send email in correct format.\nThank you,\nBot
     # Send Message    ${senderId}    ${mailSubject}    ${body}
-    Send Email    ${senderId}    ${mailSubject}    ${body}
+    Send Email    
+    ...    ${senderId}    
+    ...    ${mailSubject}    
+    ...    ${body}
+    ...    cc_recipients=${recepient_list}
 
 Get Attachment Filename
     [Arguments]    ${attachment}
@@ -231,6 +235,7 @@ send mail with excel report
     ...    ${senderId}   
     ...    ${subject}    
     ...    ${body}
+    ...    cc_recipients=${recepient_list}
     ...    attachments=${reportpath}
     # Quit Application
 
