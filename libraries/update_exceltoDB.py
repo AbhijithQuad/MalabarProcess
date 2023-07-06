@@ -18,40 +18,49 @@ def read_horizontaldata(inputpath):
     get all data and return that for further process
 
     """
+    try:
+        df = pd.read_excel(inputpath, header=None, skiprows=2)
 
-    df = pd.read_excel(inputpath, header=None, skiprows=2)
+        # Transpose the dataframe
+        df = df.T
 
-    # Transpose the dataframe
-    df = df.T
+        # Set the first column as the header
+        df.columns = df.iloc[0]
 
-    # Set the first column as the header
-    df.columns = df.iloc[0]
+        # Remove the first row (header row)
+        df = df[1:]
 
-    # Remove the first row (header row)
-    df = df[1:]
+        # Reset the index
+        df.reset_index(drop=True, inplace=True)
 
-    # Reset the index
-    df.reset_index(drop=True, inplace=True)
+        # Accessing values by column name
+        # legal_entity_code = df['Legal Entity Code'][1]
+        # cost_center_code = df['Cost Center Code'][1]
+        # emp_code = df['Emp Code'][1]
+        # interior_code = df['Interior Code'][1]
+        # work_code = df['Work Code'][1]
 
-    # Accessing values by column name
-    legal_entity_code = df['Legal Entity Code'][1]
-    cost_center_code = df['Cost Center Code'][1]
-    emp_code = df['Emp Code'][1]
-    interior_code = df['Interior Code'][1]
-    work_code = df['Work Code'][1]
-
-       # Accessing values by column name
-    legal_entity_code = df['Legal Entity Code'][1] if not pd.isna(df['Legal Entity Code'][1]) else 'Not found'
-    cost_center_code = df['Cost Center Code'][1] if not pd.isna(df['Cost Center Code'][1]) else 'Not found'
-    emp_code = df['Emp Code'][1] if not pd.isna(df['Emp Code'][1]) else 'Not found'
-    interior_code = df['Interior Code'][1] if not pd.isna(df['Interior Code'][1]) else 'Not found'
-    work_code = df['Work Code'][1] if not pd.isna(df['Work Code'][1]) else 'Not found'
+        # Accessing values by column name
+        legal_entity_code = df['Legal Entity Code'][1] if not pd.isna(df['Legal Entity Code'][1]) else 'Not found'
+        cost_center_code = df['Cost Center Code'][1] if not pd.isna(df['Cost Center Code'][1]) else 'Not found'
+        emp_code = df['Emp Code'][1] if not pd.isna(df['Emp Code'][1]) else 'Not found'
+        interior_code = df['Interior Code'][1] if not pd.isna(df['Interior Code'][1]) else 'Not found'
+        work_code = df['Work Code'][1] if not pd.isna(df['Work Code'][1]) else 'Not found'
 
 
-    return  legal_entity_code, cost_center_code, emp_code, interior_code, work_code
+        return  legal_entity_code, cost_center_code, emp_code, interior_code, work_code
+    
+    except Exception as e:
+        print("Exception is : ",str(e))
+        legal_entity_code = "Not found"
+        cost_center_code  = "Not found"
+        emp_code          = "Not found"
+        interior_code     = "Not found"
+        work_code         = "Not found"
 
- 
+        return  legal_entity_code, cost_center_code, emp_code, interior_code, work_code
 
+        
 
 # def create_columns(filename):
 #         try:
