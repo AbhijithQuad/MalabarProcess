@@ -338,6 +338,7 @@ Find Matching PDF Files
 
         FOR    ${element}    IN    @{pdf_files}
             ${extension}=    Get File Extension    ${element}
+            ${extension}   Convert To Lower Case    ${extension}
             IF    '${extension}' == '.pdf'               
 
                 ${pdf_file_name}=    Get File Name    ${element}     
