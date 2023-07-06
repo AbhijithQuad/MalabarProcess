@@ -124,6 +124,7 @@ Get the excel file and zip file
 
      FOR    ${file}    IN    @{Excel_files}
             ${extension_xl}=    Get File Extension    ${file}
+            ${extension_xl}    Convert To Lower Case    ${extension_xl} 
             #load the excel file to database
             IF    '${extension_xl}' == '.xlsx'               
                 ${input_excel_path}    Set Variable    ${file}
@@ -275,7 +276,8 @@ Fetching each row from DatabaseProcess
         ${vr_no}=    Set Variable    ${input_data_table_element['voucher_number']}
         ${voucher_legalentity}=    Set Variable    ${input_data_table_element['voucher_legalentity']}
         Set Global Variable     ${voucher_legalentity}
-        ${vr_name}=    Set Variable    ${vr_no}.pdf             
+        ${vr_name}=    Set Variable    ${vr_no}.pdf
+        ${vr_name}    Convert To Lower Case    ${vr_name}   
         #${pdf_exist}=    Loop through input folders     ${vr_name}    ${folder}
         ${pdf_exist}=   Find Matching PDF Files     ${folder}    ${vr_name}    ${input_data_table_element}
         IF     ${pdf_exist} == $False  
@@ -310,6 +312,7 @@ Find Matching PDF Files
 
         FOR    ${element}    IN    @{pdf_files}
                 ${extension}=    Get File Extension    ${element}
+                ${extension}    Convert To Lower Case    ${extension}
                 IF    '${extension}' == '.pdf'
                     ${skip_subfolder}    Set Variable    ${True}             
                      Exit For Loop    
