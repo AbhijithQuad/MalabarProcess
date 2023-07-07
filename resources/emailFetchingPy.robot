@@ -86,12 +86,16 @@ Email Fetching Based On Subject
             Log To Console    excel attachments is: ${excelFileList}
             Log    excel attachments is: ${excelFileList}
             Log To Console    zip attachments is: ${zipFileList} 
-            Log    zip attachments is: ${zipFileList}    
-            
+            Log    zip attachments is: ${zipFileList}
+
+            # collect email type i.e market or petty
+            ${mail_type}    Get Email Type    ${email}    ${Email_type}
+
             # concatenating senderId and sendingTime to variable ${senderId_sendingTime} 
-            # ${voucher_amount}    Replace String    ${voucherData['amount']}    .00    ${EMPTY}
             ${sendingTime}    Replace String    ${sendingTime}    :    -  
-            ${senderId_sendingTime}    Catenate    ${senderId}_   ${sendingTime}
+            # ${senderId_sendingTime}    Catenate    ${senderId}_   ${sendingTime}
+            ${senderId_mailType}    Set Variable    ${senderId}_${mail_type}
+            ${senderId_sendingTime}    Set Variable    ${senderId_mailType}_${sendingTime}
 
             ${attachmentDownloadPath}    Set Variable    ${attachmentDownloadFolder}${/}InputFolder${/}${senderId_sendingTime}${/}
             IF    '${excelAttachmentLength}' == '1' and '${zipAttachmentLength}' == '1'
