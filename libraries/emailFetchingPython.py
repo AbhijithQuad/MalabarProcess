@@ -125,6 +125,18 @@ def check_attachments_with_multiple_zip(attachment_list):
 
 
 
+def get_email_type(email, mail_type):
+    '''finding email type marketing or petty'''
+    try:
+        subject = email.Subject.lower()
+        for item in mail_type:
+            if item.lower() in subject:
+                return item
+        return None
+    except Exception as e:
+        print("Exception occurred: ", str(e))
+        return None
+
 def mark_unread_email_as_read(email):
     try:
         email.UnRead = False
