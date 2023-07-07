@@ -112,9 +112,16 @@ collect email id from folder name
     ${splitResult}    Split String    ${folder_name}    _
     # Log To Console    ${splitResult}
     ${last_item}    Remove From List    ${splitResult}    -1
+
+    ${mail_id}    Get From List    ${splitResult}    0
+    ${mail_type}    Get From List    ${splitResult}    1
+
     # ${concatenated}    Catenate    SEPARATOR=    ${splitResult}
     ${mail_id}    Evaluate    ''.join(${splitResult})   
     Log To Console    Mail id is: ${mail_id}
+
+    Log To Console    Data item type is: ${mail_type} petty
+    Set Global Variable    ${mail_type}
     RETURN    ${mail_id}
 
 
@@ -136,10 +143,12 @@ Get the excel file and zip file
                  #read the horizontal aligned data from input file
                  ${legal_entity_code}     ${cost_center_code}     ${emp_code}     ${interior_code}     ${work_code}        read_horizontaldata    ${input_excel_path}
                  #checking that if any of those horizontaly aligned data is missing
+                 Log To Console   checking header fields data in excel
+                 Log   checking header fields data in excel
                  ${empty_primary_data}    ${comments}     check_empty_horizontaldata    ${legal_entity_code}     ${cost_center_code}     ${emp_code}     ${interior_code}     ${work_code}        
                   IF    ${empty_primary_data} != $True
                      
-                   ${subject}    Set Variable    Alert: Missing mandatory Fields in excel file
+                    ${subject}    Set Variable    Alert: Missing mandatory Fields in excel file
                     ${body}    set variable    Hi Team, \nplease find the attached excel file that not containining expected data fields.\n${comments}.\n\nThank you,\nBot
                     # Dear [Recipient's Name],\n\n${messageBody}\n\nSincerely,\n[Your Name]
                     send mail with excel report    ${mail_id}    ${input_excel_path}    ${subject}    ${body}
