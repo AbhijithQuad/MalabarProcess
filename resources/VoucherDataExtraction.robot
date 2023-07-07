@@ -344,7 +344,8 @@ Find Matching PDF Files
             ${extension}   Convert To Lower Case    ${extension}
             IF    '${extension}' == '.pdf'               
 
-                ${pdf_file_name}=    Get File Name    ${element}     
+                ${pdf_file_name}=    Get File Name    ${element}
+                ${pdf_file_name}   Convert To Lower Case    ${pdf_file_name}
                 IF    '${vr_name}' == '${pdf_file_name}'  
                     ${pdf_file_path}=    Set Variable     ${element}                  
                     ${pdf_exist} =    Set Variable    ${True}
