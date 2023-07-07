@@ -35,7 +35,10 @@ extracting voucher data from vouchers
         Log To Console    Voucher number is :${voucherData['voucherNo']}
         Log To Console    Voucher date is :${voucherData['date']}
         Log To Console    Voucher issued to is :${voucherData['issuedTo']}
-        Log To Console    Supporting document amount is :${voucherData['supportingDocAmount']}
+        #Log To Console    Supporting document amount is :${voucherData['supportingDocAmount']}
+        IF    ${voucherData['supportingDocFound']}       
+            Log To Console    Supporting document amount is :${voucherData['supportingDocAmount']}
+        END
 
         # Log To Console    Supporting Document found :${voucherData['SupportDoc']}
         
@@ -80,7 +83,7 @@ check voucher data matching based on input file
 
         # comparing amount from voucher and amount from supporting
         IF    ${comparison_required} == $True
-            ${comment}    Set Variable    extracted amount from voucher and amount from supporting document is not matching
+            ${comment}    Set Variable    The extracted amount from the voucher does not match the amount from the supporting document
             comparing extracted data    ${voucher_amount}   ${voucherData['supportingDocAmount']}    ${voucherData}      ${comment}
         END
 
