@@ -43,8 +43,8 @@ def supporting_doc_checking(extracted_dict):
 
             for item in reversed(after_split):
                 item = item.upper()
-                if 'RS' in item or '.00' in item or '/-' in item or '/.' in item or ',' in item or '/' in item:
-                    item = item.replace('RS', '').replace('.00','').replace('/-','').replace('/.','').replace(',','').replace('/','').strip()
+                if 'RS' in item or '₹' in item or '.00' in item or '/-' in item or '/.' in item or ',' in item or '/' in item:
+                    item = item.replace('RS', '').replace('₹','').replace('.00','').replace('/-','').replace('/.','').replace(',','').replace('/','').strip()
                 # item =item.strip()
                 if item ==str(amount_check):
                     print("supporting doc match found, value is :",item)
