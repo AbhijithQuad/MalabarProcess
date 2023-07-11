@@ -2,7 +2,7 @@
 Documentation       Process Title : Process description
 
 Library             Collections
-Library             MyLibrary
+Library             MyLibrary.py
 Library             String
 Library             signaturechecking.py
 Library            voucherExtraction
