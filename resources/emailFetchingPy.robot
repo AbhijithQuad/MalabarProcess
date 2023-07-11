@@ -89,7 +89,7 @@ Email Fetching Based On Subject
             Log    zip attachments is: ${zipFileList}
 
             # collect email type i.e market or petty
-            ${mail_type}    Get Email Type    ${email}    ${Email_type}
+            ${mail_type}    Get Email Type    ${email}    ${email_type}
 
             # concatenating senderId and sendingTime to variable ${senderId_sendingTime} 
             ${sendingTime}    Replace String    ${sendingTime}    :    -  
