@@ -36,7 +36,7 @@ polling_duration                  =   0
 
 recepient_list                    = ['abhijith.p@quadance.com','nibiya.monas@quadance.com']
 
-
+email_type                         = ['marketing', 'project']
 
 # ----------------------voucherDataExtraction.robot file variables ----------------------
 
