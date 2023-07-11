@@ -117,7 +117,7 @@ collect email id from folder name
     ${mail_type}    Get From List    ${splitResult}    1
 
     # ${concatenated}    Catenate    SEPARATOR=    ${splitResult}
-    ${mail_id}    Evaluate    ''.join(${splitResult})   
+    # ${mail_id}    Evaluate    ''.join(${splitResult})   
     Log To Console    Mail id is: ${mail_id}
 
     Log To Console    Data item type is: ${mail_type} petty
