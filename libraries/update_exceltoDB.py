@@ -266,8 +266,8 @@ def upload_input_values_DB(legal_entity_code,cost_center_code, emp_code, interio
         
         # excel_data['voucher_legalentity'] = legal_entity_code +'_'+ excel_data['voucher_number'].astype(str)
         # excel_data['voucher_legalentity'] = legal_entity_code + '_' + excel_data['voucher_number'].fillna('').astype(str)
-        # excel_data['voucher_legalentity'] = legal_entity_code + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
-        excel_data['voucher_costCenter'] = cost_center_code + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
+        excel_data['voucher_legalentity'] = legal_entity_code + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
+        #excel_data['voucher_costCenter'] = cost_center_code + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
 
        # Remove rows where credit column is not NaN
         excel_data = excel_data[excel_data['credit'].isnull()]
