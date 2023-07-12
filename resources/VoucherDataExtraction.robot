@@ -180,7 +180,7 @@ Get the excel file and zip file
                     Log    Failed to update excel file
                     Log To Console    Failed to update excel file
                     ${subject}    Set Variable    Alert: Failed to update excel file 
-                    ${body}    set variable    Hi, \nUnable to continue the process with this input file as it may contains formula in column named 'Voucher_number' or 'debit'. Please check that. \n\nThank you,\nBot
+                    ${body}    set variable    Hi, \nUnable to continue the process with this input file as it may contains formula in column named 'Voucher_number' or 'debit'. Or the sheet name is not 'Sheet1'. Please check that. \n\nThank you,\nBot
                     send mail with excel report    ${mail_id}    ${input_excel_path}    ${subject}    ${body}
                     ${run_required}    Set Variable    ${False}   
                     # Exit For Loop
