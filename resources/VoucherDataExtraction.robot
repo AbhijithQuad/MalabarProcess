@@ -6,7 +6,8 @@ Library             MyLibrary.py
 Library             String
 Library             signaturechecking.py
 Library            voucherExtraction
-Library             update_exceltoDB.py
+# Library             update_exceltoDB.py
+Library            update_exceltoDB.py
 Library            RPA.Excel.Files
 Variables      ../variables/variables.py
 Library        Collections
@@ -174,13 +175,13 @@ Get the excel file and zip file
                 create_columns    ${input_excel_path}
                  
                  #here checking the duplication occurs if so upadte the status to excel sheet
-                ${duplicationUpdation}    duplication_checking_process     ${input_excel_path}    ${legal_entity_code}
+                ${duplicationUpdation}    duplication_checking_process     ${input_excel_path}    ${cost_center_code}
 
                 IF    '${duplicationUpdation}' =='failure'
                     Log    Failed to update excel file
                     Log To Console    Failed to update excel file
                     ${subject}    Set Variable    Alert: Failed to update excel file 
-                    ${body}    set variable    Hi, \nUnable to continue the process with this input file as it may contains formula in column named 'Voucher_number' or 'debit'. Please check that. \n\nThank you,\nBot
+                    ${body}    set variable    Hi, \nUnable to continue the process with this input file as it may contains formula in column named 'Voucher_number' or 'debit'.Or may be the sheetname is not 'Sheet1'. Please check that. \n\nThank you,\nBot
                     send mail with excel report    ${mail_id}    ${input_excel_path}    ${subject}    ${body}
                     ${run_required}    Set Variable    ${False}   
                     # Exit For Loop
@@ -190,7 +191,8 @@ Get the excel file and zip file
 
                 #upload the input sheet data to database
                 ${no_data_in_df}    ${inputdata_uploaded}      ${voucherNo_empty}   upload_input_values_DB    ${legal_entity_code}    ${cost_center_code}     ${emp_code}     ${interior_code}     ${work_code}     ${input_excel_path}    ${engine_str}     ${mail_id}                  
-                Set Global Variable    ${legal_entity_code}
+                # Set Global Variable    ${legal_entity_code}
+                Set Global Variable    ${cost_center_code}
 
                      
                     log to console    No data in dataframe after removing duplicates :${no_data_in_df}
@@ -224,7 +226,10 @@ Get the excel file and zip file
                         Log    Failed to upload input file to db
                         ${subject}    Set Variable    Alert: Database updation failed.
                         ${body}    set variable    Hi, \nCurrently unable to update data to database due to technical error Please fix that.\n\nThank you,\nBot
-                        send mail with excel report    ${system_admin_mail_id}    ${input_excel_path}    ${subject}    ${body}
+                        ${recepient}    Create List    ${system_admin_mail_id}  ${mail_id}
+                        # Append To List    ${recepient}    ${system_admin_mail_id}
+
+                        send mail with excel report    ${recepient}    ${input_excel_path}    ${subject}    ${body}
                         ${run_required}    Set Variable    ${False}   
                         # Exit For Loop
                         RETURN    ${run_required} 
@@ -283,8 +288,8 @@ Fetching each row from DatabaseProcess
 
        
         ${vr_no}=    Set Variable    ${input_data_table_element['voucher_number']}
-        ${voucher_legalentity}=    Set Variable    ${input_data_table_element['voucher_legalentity']}
-        Set Global Variable     ${voucher_legalentity}
+        ${voucher_cost_center_code}=    Set Variable    ${input_data_table_element['voucher_cost_center_code']}
+        Set Global Variable     ${voucher_cost_center_code}
         ${vr_name}=    Set Variable    ${vr_no}.pdf
         ${vr_name}    Convert To Lower Case    ${vr_name}   
         #${pdf_exist}=    Loop through input folders     ${vr_name}    ${folder}
@@ -295,13 +300,13 @@ Fetching each row from DatabaseProcess
             ${comments}=    Set Variable     No voucher pdf exist         
             Log To Console    ${vr_no}-Update to DB- No voucher document exist
             Log To Console    voucher: ${vr_no} is Invalid
-            ${update_status}    update_status_to_DB    ${status}    ${comments}   ${voucher_legalentity}      ${pymysql_connection}
+            ${update_status}    update_status_to_DB    ${status}    ${comments}   ${voucher_cost_center_code}      ${pymysql_connection}
             Log To Console     Db loading status is ${update_status} 
 
         # ELSE
         #     ${status}=     Set Variable    Valid
         #     ${comments}=    Set Variable      voucher pdf exist   
-        #      ${update_status}     update_status_to_DB    ${status}    ${comments}   ${voucher_legalentity}      ${pymysql_connection}
+        #      ${update_status}     update_status_to_DB    ${status}    ${comments}   ${voucher_cost_center_code}      ${pymysql_connection}
            
         #     Log To Console    ${vr_no}-Update to DB-  voucher document exist
         END  
@@ -374,13 +379,13 @@ Find Matching PDF Files
                      IF    '${sign_status}' == 'error'
                         ${status}=     Set Variable    Invalid
                         ${comments}=    Set Variable    'issues in signature detection ${vr_name}'
-                        ${update_status}=     update_status_to_DB    ${status}    ${comments}   ${voucher_legalentity}      ${pymysql_connection}
+                        ${update_status}=     update_status_to_DB    ${status}    ${comments}   ${voucher_cost_center_code}      ${pymysql_connection}
                         Exit For Loop
 
                     ELSE IF    ${sign_status} == $True
                         ${status}=     Set Variable    Invalid
                         ${comments}=    Set Variable    'Duplicate signature detected'
-                        ${update_status}=     update_status_to_DB    ${status}    ${comments}   ${voucher_legalentity}      ${pymysql_connection}
+                        ${update_status}=     update_status_to_DB    ${status}    ${comments}   ${voucher_cost_center_code}      ${pymysql_connection}
                         Exit For Loop
 
                     END
@@ -389,7 +394,7 @@ Find Matching PDF Files
                      Exit For Loop If     ${voucherData} == 'error'
                     #below code is to compare the values with input file data
                     ${status}    ${comments}    Run Keyword And Ignore Error     check voucher data matching based on input file     ${voucherData}    ${input_data_table_element}
-                    Run Keyword If   '${status}' == 'FAIL'   update_status_to_DB    ${status}    ${comments}   ${voucher_legalentity}      ${pymysql_connection}
+                    Run Keyword If   '${status}' == 'FAIL'   update_status_to_DB    ${status}    ${comments}   ${voucher_cost_center_code}      ${pymysql_connection}
 
                     #Exit For Loop   
 

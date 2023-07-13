@@ -166,7 +166,7 @@ def issued_to_extraction(extracted_result):
     return issued_to_found
 
 
-def extract_voucher_data(voucher_pdf,endpoint,subscription_key,vrLegalEntity,legalentity):
+def extract_voucher_data(voucher_pdf,endpoint,subscription_key,voucher_cost_center_code,cost_center_code):
     """
     for extracting voucher data from voucher and returning voucher data as a dictionary.
 
@@ -195,7 +195,8 @@ def extract_voucher_data(voucher_pdf,endpoint,subscription_key,vrLegalEntity,leg
 
     try:    
         # Convert PDF to images
-        images = convert_from_path(voucher_pdf, poppler_path=r'C:\poppler\poppler-22.04.0\Library\bin')
+        # images = convert_from_path(voucher_pdf, poppler_path=r'C:\poppler\poppler-22.04.0\Library\bin')
+        images = convert_from_path(voucher_pdf)
 
 
         global extracted_result
@@ -311,10 +312,10 @@ def extract_voucher_data(voucher_pdf,endpoint,subscription_key,vrLegalEntity,leg
         #updating dictionary with extracted result 
         if voucher_number_match != "":
             #voucher legal entity updation
-            voucherData.update({"VoLegalEntity": vrLegalEntity})
+            voucherData.update({"VoCostCCode": voucher_cost_center_code})
 
             #legalentity updation
-            voucherData.update({"LegalEntity": legalentity})
+            voucherData.update({"costCenterCode": cost_center_code})
 
             voucherData.update({"voucherNo":voucher_number_match})
 

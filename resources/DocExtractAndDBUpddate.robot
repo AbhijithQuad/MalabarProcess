@@ -21,7 +21,7 @@ ${password}    root
 extracting voucher data from vouchers
     [Arguments]    ${input_File}    ${endpoint}    ${azure_key}
     # collect extracted voucjer data in a dictionary 'voucherData'
-    ${voucherData}    extract voucher data    ${input_File}    ${endpoint}    ${azure_key}    ${voucher_legalentity}     ${legal_entity_code}   
+    ${voucherData}    extract voucher data    ${input_File}    ${endpoint}    ${azure_key}    ${voucher_cost_center_code}     ${cost_center_code}   
     
     
     #  return dictionary key
@@ -46,7 +46,7 @@ extracting voucher data from vouchers
     ELSE
         ${status}     Set Variable    Invalid
         ${comment}     Set Variable    Failed to extract data from the pdf file
-        update_status_to_DB     ${status}      ${comment}     ${voucher_legalentity}     ${pymysql_connection}
+        update_status_to_DB     ${status}      ${comment}     ${voucher_cost_center_code}     ${pymysql_connection}
         RETURN    'error'
     END
 
@@ -118,7 +118,7 @@ check voucher data matching based on input file
             ${status}    Set Variable    Valid
             ${comment}    Set Variable    Voucher validation process is success
             add data item to database      ${voucherData}
-            update_status_to_DB     ${status}      ${comment}     ${voucher_legalentity}     ${pymysql_connection}   
+            update_status_to_DB     ${status}      ${comment}     ${voucher_cost_center_code}     ${pymysql_connection}   
         END
 
 
@@ -127,7 +127,7 @@ check voucher data matching based on input file
         ${comment}    Set Variable    Supporting document is not found
         Log To Console    supporting document not found
         add data item to database      ${voucherData}
-        update_status_to_DB     ${status}      ${comment}     ${voucher_legalentity}     ${pymysql_connection}
+        update_status_to_DB     ${status}      ${comment}     ${voucher_cost_center_code}     ${pymysql_connection}
     
     END
 
@@ -147,7 +147,7 @@ comparing extracted data
         
         ${status}    Set Variable    Invalid
         # call keyword to update input table data item's status as invalid.        
-        update_status_to_DB     ${status}      ${comment}     ${voucher_legalentity}     ${pymysql_connection}
+        update_status_to_DB     ${status}      ${comment}     ${voucher_cost_center_code}     ${pymysql_connection}
         add data item to database      ${voucherData}
         ${comparison_required}=    Set Variable    ${False}
         Set Global Variable    ${comparison_required}

@@ -34,10 +34,12 @@ def add_data_row_to_table(voucherData, engine):
             # update tablename here
            # __tablename__ = 'erp_transaction_table'
             __tablename__ = configVariables.erpExtractionTable
-            voucher_legalentity = Column(String, primary_key=True)
+            # voucher_legalentity = Column(String, primary_key=True)
             #voucherno_legal_entity = Column(String, primary_key=True)
+            voucher_ccode = Column(String, primary_key=True)
             voucher_number = Column(String)            
-            legal_entity = Column(String)
+            # legal_entity = Column(String)
+            cost_center_code = Column(String)
             date = Column(String)
             amount = Column(Float)
             supporting_doc_present = Column(String)
@@ -54,10 +56,10 @@ def add_data_row_to_table(voucherData, engine):
         #  return dictionary key
         # 'voucherNo','amount','issuedTo','date','SupportDoc','SupportDocAmount'
         voucher_date = datetime.strptime(voucherData['date'], '%d-%b-%Y').strftime('%Y-%m-%d')
-        new_row = MalabarTable(voucher_legalentity=voucherData['VoLegalEntity'], voucher_number=voucherData['voucherNo'],
+        new_row = MalabarTable(voucher_ccode=voucherData['VoCostCCode'], voucher_number=voucherData['voucherNo'],
                                 date=voucher_date,amount=voucherData['amount'], supporting_doc_present=voucherData['supportingDocFound'],
-                                support_doc_amount=voucherData['supportingDocAmount'],legal_entity=voucherData['LegalEntity'],
-                                signature_mismatch=True,issued_to=voucherData['issuedTo'])
+                                support_doc_amount=voucherData['supportingDocAmount'],cost_center_code=voucherData['costCenterCode'],
+                                signature_mismatch=True,issued_to=voucherData['issuedTo'] )
 
 
 

@@ -3,7 +3,7 @@ Library     emailFetchingPython
 Library    Collections
 Library    RPA.Outlook.Application
 Variables    variables.py
-Library       MyLibrary
+Library       MyLibrary.py
 Library    RPA.FileSystem
 Library    RPA.Windows
 Library    DateTime
@@ -51,10 +51,10 @@ Email Fetching Based On Subject
                 FOR    ${index}    IN RANGE    ${attachmentCount}
 
                     # disable this if you are running code using .bat file
-                    # ${attachmentNames}    Get Email Attachments Name    ${email}    ${index}
+                    ${attachmentNames}    Get Email Attachments Name    ${email}    ${index}
                     
                     # disable this if you are running code using IDE
-                    ${attachmentNames}    Get Email Attachments Name In List    ${email}
+                    # ${attachmentNames}    Get Email Attachments Name In List    ${email}
                     
                     log    ${attachmentNames}
                     # Append To List    ${attachmentNames}    ${attachment_name}

@@ -103,7 +103,7 @@ def duplicate_check_database(voucher_legal_PK, engine_str):
 
     try:
         engine = create_engine(configVariables.dbConnectionString)
-        query = f"SELECT voucher_legalentity FROM {configVariables.projectPettyTable} WHERE voucher_legalentity = '{voucher_legal_PK}'"
+        query = f"SELECT voucher_cost_center_code FROM {configVariables.projectPettyTable} WHERE voucher_cost_center_code = '{voucher_legal_PK}'"
         df = pd.read_sql(query, con=engine)
         
         if len(df) > 0:
@@ -165,7 +165,7 @@ def update_duplication_toExcel(filename, is_duplicated, voucher_no):
 
 
 
-def duplication_checking_process(filepath,LE):
+def duplication_checking_process(filepath,ccCode):
     """
     this is the main function used to check for duplication and inside from this function another functions were called those are written just above 
     from here.
@@ -196,11 +196,11 @@ def duplication_checking_process(filepath,LE):
 
         for index, row in df.iterrows():
             voucher_no = row['voucher_number']      
-            vr_le = LE + '_' + str(voucher_no)
-            print(vr_le)
+            vr_ccCode = str(ccCode) + '_' + str(voucher_no)
+            print(vr_ccCode)
             #Here checking the duplication occured in database calling another function
-            # duplication =  duplicate_check_database(vr_le,'mysql+mysqlconnector://root:root@127.0.0.1:3306/malabarprocessdb')
-            duplication =  duplicate_check_database(vr_le,configVariables.dbConnectionString)
+            # duplication =  duplicate_check_database(vr_ccCode,'mysql+mysqlconnector://root:root@127.0.0.1:3306/malabarprocessdb')
+            duplication =  duplicate_check_database(vr_ccCode,configVariables.dbConnectionString)
             if duplication:
                 status = 'Dupliacate data'
                 #updating the duplcation status to excel 
@@ -267,7 +267,7 @@ def upload_input_values_DB(legal_entity_code,cost_center_code, emp_code, interio
         # excel_data['voucher_legalentity'] = legal_entity_code +'_'+ excel_data['voucher_number'].astype(str)
         # excel_data['voucher_legalentity'] = legal_entity_code + '_' + excel_data['voucher_number'].fillna('').astype(str)
         # excel_data['voucher_legalentity'] = legal_entity_code + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
-        excel_data['voucher_costCenter'] = cost_center_code + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
+        excel_data['voucher_cost_center_code'] = str(cost_center_code) + '_' + excel_data['voucher_number'].fillna('').apply(lambda x: str(x).split('.')[0])
 
        # Remove rows where credit column is not NaN
         excel_data = excel_data[excel_data['credit'].isnull()]
@@ -367,7 +367,7 @@ def read_data_from_database():
         # Execute the query and fetch data into a DataFrame
         df = pd.read_sql(query, con=engine)
 
-        df['prefix'] = df['voucher_legalentity'].str.split('_').str[0]
+        df['prefix'] = df['voucher_cost_center_code'].str.split('_').str[0]
         df = df.sort_values(by='prefix')
 
         return df.to_dict(orient='records')
@@ -384,7 +384,7 @@ def update_status_to_DB(status, comment, primary_key, pymysql_conn_str):
     Update the status and comment columns in the database for a given primary key
 
     Parameters:
-    primary_key (str): The primary key value voucher_legalentity.
+    primary_key (str): The primary key value voucher_cost_center_code.
     status (str): The new status value.
     comment (str): The new comment value.
     """
@@ -401,8 +401,8 @@ def update_status_to_DB(status, comment, primary_key, pymysql_conn_str):
 
         cursor = conn.cursor()
 
-        #sql = f"UPDATE project_petty_table SET status = %s, comments = %s WHERE voucher_legalentity = %s"
-        sql = f"UPDATE {configVariables.projectPettyTable} SET status = %s, comments = %s WHERE voucher_legalentity = %s"
+        #sql = f"UPDATE project_petty_table SET status = %s, comments = %s WHERE voucher_cost_center_code = %s"
+        sql = f"UPDATE {configVariables.projectPettyTable} SET status = %s, comments = %s WHERE voucher_cost_center_code = %s"
         cursor.execute(sql, (status, comment, primary_key))
 
         conn.commit()
